@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Salário</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        input, button { padding: 10px; margin-top: 10px; width: 200px; }
+        #resultado { margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>Calculadora de Salário</h2>
+    <label for="vendas">Valor de vendas:</label><br>
+    <input type="number" id="vendas" placeholder="Digite o valor em R$" /><br>
+    <button onclick="calcular()">Calcular</button>
+
+    <div id="resultado"></div>
+
+    <script>
+        function calcular() {
+            var valorVendas = document.getElementById("vendas").value;
+
+            fetch("CalculadoraSalario.aspx/CalcularSalario", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8"
+                },
+                body: JSON.stringify({ vendas: parseFloat(valorVendas) })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("resultado").innerHTML = data.d;
+            })
+            .catch(error => {
+                console.error("Erro:", error);
+            });
+        }
+    </script>
+</body>
+</html>
